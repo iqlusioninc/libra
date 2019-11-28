@@ -19,17 +19,23 @@ use std::{
     sync::Arc,
     time::{Duration, Instant},
 };
-use vm_runtime::MoveVM;
+use vm_runtime::VMExecutor;
 
 /// Basic communication with the Execution module;
 /// implements StateComputer traits.
-pub struct ExecutionProxy {
-    executor: Arc<Executor<MoveVM>>,
+pub struct ExecutionProxy<V>
+where
+    V: VMExecutor + Send + Sync,
+{
+    executor: Arc<Executor<V>>,
     synchronizer: Arc<StateSyncClient>,
 }
 
-impl ExecutionProxy {
-    pub fn new(executor: Arc<Executor<MoveVM>>, synchronizer: Arc<StateSyncClient>) -> Self {
+impl<V> ExecutionProxy<V>
+where
+    V: VMExecutor + Send + Sync,
+{
+    pub fn new(executor: Arc<Executor<V>>, synchronizer: Arc<StateSyncClient>) -> Self {
         Self {
             executor,
             synchronizer,
@@ -37,7 +43,10 @@ impl ExecutionProxy {
     }
 }
 
-impl StateComputer for ExecutionProxy {
+impl<V> StateComputer for ExecutionProxy<V>
+where
+    V: VMExecutor + Send + Sync,
+{
     type Payload = Vec<SignedTransaction>;
 
     fn compute(
@@ -85,7 +94,7 @@ impl StateComputer for ExecutionProxy {
                 Err(e) => Err(e.into()),
             }
         }
-            .boxed()
+        .boxed()
     }
 
     /// Send a successful commit. A future is fulfilled when the state is finalized.
@@ -131,7 +140,7 @@ impl StateComputer for ExecutionProxy {
                 Err(e) => Err(e.into()),
             }
         }
-            .boxed()
+        .boxed()
     }
 
     /// Synchronize to a commit that not present locally.

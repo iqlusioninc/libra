@@ -28,7 +28,7 @@ use network::validator_network::{ConsensusNetworkEvents, ConsensusNetworkSender}
 use state_synchronizer::StateSyncClient;
 use std::{convert::TryFrom, sync::Arc};
 use tokio::runtime;
-use vm_runtime::MoveVM;
+use vm_runtime::VMExecutor;
 
 ///  The state necessary to begin state machine replication including ValidatorSet, networking etc.
 pub struct InitialSetup {
@@ -48,14 +48,17 @@ pub struct ChainedBftProvider {
 }
 
 impl ChainedBftProvider {
-    pub fn new(
+    pub fn new<V>(
         node_config: &mut NodeConfig,
         network_sender: ConsensusNetworkSender,
         network_events: ConsensusNetworkEvents,
         mempool_client: Arc<MempoolClient>,
-        executor: Arc<Executor<MoveVM>>,
+        executor: Arc<Executor<V>>,
         synchronizer_client: Arc<StateSyncClient>,
-    ) -> Self {
+    ) -> Self
+    where
+        V: VMExecutor + Send + Sync + 'static,
+    {
         let runtime = runtime::Builder::new()
             .name_prefix("consensus-")
             .build()

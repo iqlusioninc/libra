@@ -7,7 +7,6 @@
 //! Currently, the only consensus protocol supported is LibraBFT (based on
 //! [HotStuff](https://arxiv.org/pdf/1803.05069.pdf)).
 
-#![cfg_attr(not(feature = "fuzzing"), deny(missing_docs))]
 #![cfg_attr(feature = "fuzzing", allow(dead_code))]
 #![recursion_limit = "512"]
 extern crate failure;
@@ -16,9 +15,9 @@ extern crate failure;
 #[macro_use]
 extern crate debug_interface;
 
-mod chained_bft;
+pub mod chained_bft;
 
-mod util;
+pub mod util;
 
 #[cfg(feature = "fuzzing")]
 pub use chained_bft::event_processor_fuzzing;
@@ -29,6 +28,6 @@ pub mod consensus_provider;
 
 mod counters;
 
-mod state_computer;
-mod state_replication;
-mod txn_manager;
+pub mod state_computer;
+pub mod state_replication;
+pub mod txn_manager;
