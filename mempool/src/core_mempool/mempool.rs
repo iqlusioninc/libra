@@ -38,7 +38,7 @@ pub struct Mempool {
 }
 
 impl Mempool {
-    pub(crate) fn new(config: &NodeConfig) -> Self {
+    pub fn new(config: &NodeConfig) -> Self {
         Mempool {
             transactions: TransactionStore::new(&config.mempool),
             sequence_number_cache: LruCache::new(config.mempool.capacity),

@@ -1,7 +1,9 @@
 // Copyright (c) The Libra Core Contributors
 // SPDX-License-Identifier: Apache-2.0
 
-#![deny(missing_docs)]
+// TODO(tarcieri): docs?
+// #![deny(missing_docs)]
+
 //! Mempool is used to hold transactions that have been submitted but not yet agreed upon and
 //! executed.
 //!
@@ -54,10 +56,10 @@
 pub mod proto;
 pub use runtime::MempoolRuntime;
 
-mod core_mempool;
-mod mempool_service;
+pub mod core_mempool;
+pub mod mempool_service;
 mod runtime;
-mod shared_mempool;
+pub mod shared_mempool;
 
 // module op counters
 use lazy_static::lazy_static;

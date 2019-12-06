@@ -23,8 +23,8 @@ use std::{
 };
 
 #[derive(Clone)]
-pub(crate) struct MempoolService {
-    pub(crate) core_mempool: Arc<Mutex<CoreMempool>>,
+pub struct MempoolService {
+    pub core_mempool: Arc<Mutex<CoreMempool>>,
 }
 
 impl Mempool for MempoolService {

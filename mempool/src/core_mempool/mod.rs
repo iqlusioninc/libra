@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 mod index;
-mod mempool;
+pub mod mempool;
 mod transaction;
 mod transaction_store;
 

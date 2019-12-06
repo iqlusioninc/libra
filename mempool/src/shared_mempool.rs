@@ -43,7 +43,7 @@ type PeerInfo = HashMap<PeerId, PeerSyncState>;
 
 /// Outbound peer syncing event emitted by [`IntervalStream`].
 #[derive(Debug)]
-pub(crate) struct SyncEvent;
+pub struct SyncEvent;
 
 type IntervalStream = Pin<Box<dyn Stream<Item = SyncEvent> + Send + 'static>>;
 
@@ -374,7 +374,7 @@ async fn gc_task(mempool: Arc<Mutex<CoreMempool>>, gc_interval_ms: u64) {
 ///   - outbound_sync_task (task that periodically broadcasts transactions to peers)
 ///   - inbound_network_task (task that handles inbound mempool messages and network events)
 ///   - gc_task (task that performs GC of all expired transactions by SystemTTL)
-pub(crate) fn start_shared_mempool<V>(
+pub fn start_shared_mempool<V>(
     config: &NodeConfig,
     mempool: Arc<Mutex<CoreMempool>>,
     network_sender: MempoolNetworkSender,
